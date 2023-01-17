@@ -53,3 +53,9 @@ SELECT city, country_id FROM sakila.city; = 2 colunas
 ex 2:  definindo banco de dados sakila como padrão
 USE sakila;
 SELECT city, country_id FROM city;
+
+=============
+comando CONCAT: Entre parenetses as colunas 
+SELECT CONCAT(first_name, ' ', last_name) AS 'Nome Completo' FROM sakila.actor;
+
+a função CONCAT, que cria novos dados e informações a partir dos dados já existentes em uma tabela.
