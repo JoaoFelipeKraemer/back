@@ -102,3 +102,36 @@ comando LIMIT OFFSET - Pulando linhas desnecessárias
 
 # Query + LIMIT quantidade_de_linhas OFFSET quantidade_de_linhas
 SELECT * FROM sakila.rental LIMIT 10 OFFSET 3;
+======================
+comando ORDER BY
+
+SELECT * FROM sakila.address
+ORDER BY address DESC; = DESCENTENDETE
+
+PS: ASC É EMBUTIDO ENTÃO 
+SELECT * FROM sakila.address
+ORDER BY address; = ASCENDENTE
+
+SELECT * FROM sakila.address
+ORDER BY address DESC, district ASC;
+
+====
+Juntando tudo:
+skila.films
+SELECT * FROM sakila.film; todos filmes
+SELECT title, release_year, rating FROM sakila.film; nome lançamento e classificação deses filmes
+SELECT COUNT(*) FROM sakila.film; quantos filmes
+
+
+skila.actor
+
+SELECT COUNT(last_name) FROM sakila.actor;
+SELECT COUNT(DISTINCT last_name) FROM sakila.actor; quantso sobrenomes unicos
+SELECT * FROM sakila.actor
+ORDER BY last_name ,first_name DESC; ordendo os last name em crescente e first name em decrescente
+
+skila.film
+
+SELECT title, release_year, length, rating, replacement_cost FROM sakila.film
+ORDER BY length DESC, replacement_cost ASC
+LIMIT 20;
