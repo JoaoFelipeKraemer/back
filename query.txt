@@ -96,3 +96,9 @@ comando LIMIT -  especificando a quantidade de resultados
 
 # Query + LIMIT quantidade_de_resultados
 SELECT * FROM sakila.rental LIMIT 10;
+
+======================
+comando LIMIT OFFSET - Pulando linhas desnecessárias
+
+# Query + LIMIT quantidade_de_linhas OFFSET quantidade_de_linhas
+SELECT * FROM sakila.rental LIMIT 10 OFFSET 3;
