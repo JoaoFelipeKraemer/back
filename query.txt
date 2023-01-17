@@ -79,3 +79,15 @@ INSERT INTO Escola.Estudantes VALUES
     ('Amanda', 25);
 
 =============
+comando COUNT
+SELECT COUNT(*) FROM sakila.actor; todos atores na tabela
+SELECT COUNT(first_name) FROM sakila.actor; todos da coluna
+SELECT COUNT(DISTINCT first_name) FROM sakila.actor; sem repetir nomes repetidos
+
+SELECT COUNT(district) FROM sakila.address
+WHERE district = 'Alberta' ;
+
+O comando COUNT não retorna dados nulos (NULL em SQL), entretanto valores vazios (como uma string vazia, por exemplo: "") 
+são considerados caracteres e por isso serão contados.
+
+(LIMIT) para tabelas grandesasdadas
