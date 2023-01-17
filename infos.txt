@@ -1,0 +1,57 @@
+visualizar quais bancos de dados estão disponíveis, através do modo interativo do docker, 
+você deve acessar o terminal do container-mysql
+
+-docker exec -it container-mysql bash
+
+
+acesse o mysql no container deve-se usar a mesma senha q se criou o container
+
+-mysql -u root -p
+
+ver banco de dados
+
+-SHOW DATABASES;
+
+USE serve pra definir a referência do banco de dados que será utilizado na query:
+
+-USE nome do banco de dados;
+
+-SELECT * FROM banco_de_dados.tabela
+
+retorna tabelas
+
+-SHOW TABLES;
+
+visualizar estrutura de uma tabela
+
+-DESCRIBE nome da tabela;
+
+criar banco de dados
+
+-CREATE DATABASE nome_do_banco_de_dados;
+
+
+ENTIDADE TABELA E SUAS PROPRIEDADES
+
+SELECTED QUERY LANGUAGE
+
+-RELACIONAIS relaçao entre bancos é garantida
+quando a natureza é rigida os dados precisam ser delicadamente registradas
+o dado tem q ser "seguro"
+
+NOT NULL - coluna n pode ser NULL
+UNIQUE - valor unico naquela tabela
+PRIMARY KEY - numero da chamada na tabelas por definição é unica
+FOREIGN KEY - usa primary key de outra taabela na tabela atual
+DEFAULT - valor padrão
+
+-NÃO RELACIONAIS -tabela é coleção e dados são chamados de documentos e n seguem
+uma regra estruturada cada documento pode ter estrutura própria
+a responsabilidade de estruturar n é do banco e sim do dev.
+Muitos acessos simultaneos se prefere noSQL     
+
+
+
+INSERT SELECT UPDATE DELETE  outros comandos USE  WHERE
+
+CREATE READE UPDATE DELETE - CRUD
