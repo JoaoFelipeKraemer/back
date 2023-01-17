@@ -59,3 +59,23 @@ comando CONCAT: Entre parenetses as colunas
 SELECT CONCAT(first_name, ' ', last_name) AS 'Nome Completo' FROM sakila.actor;
 
 a função CONCAT, que cria novos dados e informações a partir dos dados já existentes em uma tabela.
+=================
+comando DISTINCT - evitando dados repetidos
+SELECT DISTINCT first_name, last_name FROM sakila.actor;
+
+distingue se tem duplicatas retorna 199 quando antes retornava 200
+não remove os dados apenas não os exibe
+
+CREATE DATABASE `Escola`;
+CREATE TABLE IF NOT EXISTS Escola.Estudantes (
+    `Nome` VARCHAR(7) CHARACTER SET utf8,
+    `Idade` INT
+);
+INSERT INTO Escola.Estudantes VALUES
+    ('Rafael', 25),
+    ('Amanda', 30),
+    ('Roberto', 45),
+    ('Carol', 19),
+    ('Amanda', 25);
+
+=============
