@@ -91,3 +91,8 @@ O comando COUNT não retorna dados nulos (NULL em SQL), entretanto valores vazio
 são considerados caracteres e por isso serão contados.
 
 (LIMIT) para tabelas grandesasdadas
+====================================
+comando LIMIT -  especificando a quantidade de resultados
+
+# Query + LIMIT quantidade_de_resultados
+SELECT * FROM sakila.rental LIMIT 10;
