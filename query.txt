@@ -1,12 +1,12 @@
  os comandos COUNT, CONCAT, DISTINCT, ORDER BY, LIMIT e outros.
 
-   Inquirir, ou query, em inglês, é o nome dado aos comandos que você digita dentro de uma janela ou linha de comando
-   com a intenção de interagir de alguma maneira com uma base de dados. No mundo de banco de dados, você pode
-   tanto trazer dados quanto alterá-los, atribuir permissões de acesso e manipulação e muito mais. 
-   Vamos dar um olhada nos principais tipos de queries a seguir:
-
-*DDL: Data Definition Language - Todos os comandos que lidam com o esquema, a descrição e o modo como os dados 
-devem existir em um banco de dados:
+query, é o nome dado aos comandos q vc digita dentro de uma janela ou linha de comando
+com a intenção de interagir de alguma maneira com uma base d dados. No mundo de banco de dados, você pode
+tanto trazer dados quanto alterá-los, atribuir permissões de cesso e manipulação e muito mais. 
+ Vamos dar um olhada nos principais tipos de queries a seguir
+ 
+ **DDL: Data Definition Language - Todos os comandos que lidam com o esquema, a descrição e
+  o modo como os dados Devem existir em um banco de dados:
 
 CREATE: Para criar bancos de dados, tabelas, índices, views, procedures, functions e triggers;
 ALTER: Para alterar a estrutura de qualquer objeto;
@@ -22,8 +22,8 @@ INSERT: Insere dados em uma tabela;
 UPDATE: Altera dados dentro de uma tabela;
 DELETE: Exclui dados de uma tabela.
 
-*DCL: Data Control Language - Mais focado nos comandos que concedem direitos, permissões e outros tipos de controle
- ao sistema de banco de dados.
+*DCL: Data Control Language - Mais focado nos comandos que concedem direitos, permissões e 
+outros tipos de controle ao sistema de banco de dados.
 
 GRANT: Concede acesso a um usuário;
 REVOKE: Remove acessos concedidos através do comando GRANT.
@@ -87,7 +87,52 @@ SELECT COUNT(DISTINCT first_name) FROM sakila.actor; sem repetir nomes repetidos
 SELECT COUNT(district) FROM sakila.address
 WHERE district = 'Alberta' ;
 
-O comando COUNT não retorna dados nulos (NULL em SQL), entretanto valores vazios (como uma string vazia, por exemplo: "") 
+O comando COUNT não retorna dados nulos (NULL em SQL),
+ entretanto valores vazios (como uma string vazia, por exemplo: "") 
 são considerados caracteres e por isso serão contados.
 
 (LIMIT) para tabelas grandesasdadas
+====================================
+comando LIMIT -  especificando a quantidade de resultados
+
+# Query + LIMIT quantidade_de_resultados
+SELECT * FROM sakila.rental LIMIT 10;
+
+======================
+comando LIMIT OFFSET - Pulando linhas desnecessárias
+
+# Query + LIMIT quantidade_de_linhas OFFSET quantidade_de_linhas
+SELECT * FROM sakila.rental LIMIT 10 OFFSET 3;
+======================
+comando ORDER BY
+
+SELECT * FROM sakila.address
+ORDER BY address DESC; = DESCENTENDETE
+
+PS: ASC É EMBUTIDO ENTÃO 
+SELECT * FROM sakila.address
+ORDER BY address; = ASCENDENTE
+
+SELECT * FROM sakila.address
+ORDER BY address DESC, district ASC;
+
+====
+Juntando tudo:
+skila.films
+SELECT * FROM sakila.film; todos filmes
+SELECT title, release_year, rating FROM sakila.film; nome lançamento e classificação deses filmes
+SELECT COUNT(*) FROM sakila.film; quantos filmes
+
+
+skila.actor
+
+SELECT COUNT(last_name) FROM sakila.actor;
+SELECT COUNT(DISTINCT last_name) FROM sakila.actor; quantso sobrenomes unicos
+SELECT * FROM sakila.actor
+ORDER BY last_name ,first_name DESC; ordendo os last name em crescente e first name em decrescente
+
+skila.film
+
+SELECT title, release_year, length, rating, replacement_cost FROM sakila.film
+ORDER BY length DESC, replacement_cost ASC
+LIMIT 20;
