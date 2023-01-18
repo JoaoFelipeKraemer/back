@@ -1,0 +1,82 @@
+
+% - O sinal de percentual, que pode representar zero, um ou múltiplos caracteres
+
+'retorna todo resultado finalizado com'
+SELECT * FROM sakila.film
+WHERE title LIKE '%don';
+====================
+'retorna todo resultado iniciado com'
+SELECT * FROM sakila.film
+WHERE title LIKE 'plu%';
+=======================
+'retorna todo resultado q contém'
+
+SELECT * FROM sakila.film
+WHERE title LIKE '%plu%';
+====================
+'retorna todo resultado q inicia com'
+
+SELECT * FROM sakila.film
+WHERE title LIKE 'p%r';
+
+====================
+
+_ - O underscore (às vezes chamado de underline, no Brasil), que representa um único caractere
+
+===============
+Encontra qualquer resultado em que o segundo caractere da frase é
+
+SELECT * FROM sakila.film
+WHERE title LIKE '_C%';
+
+=====
+Encontra qualquer resultado em q o titulo possui 8 caracteres
+SELECT * FROM sakila.film
+WHERE title LIKE '________';
+
+===
+
+todas as palavras com no minimo 3 caracter e começam com E
+SELECT * FROM sakila.film
+WHERE title LIKE 'E__%';
+===========
+
+FIXANDO
+Mostre todos os detalhes dos filmes que contêm a palavra ace no nome.
+
+Mostre todos os detalhes dos filmes cujas descrições finalizam com china.
+
+Mostre todos os detalhes dos dois filmes cujas descrições contêm a palavra girl e o título finaliza com a palavra lord.
+
+Mostre os dois casos em que, a partir do 4° caractere no título do filme, tem-se a palavra gon.
+
+Mostre o único caso em que, a partir do 4° caractere no título do filme, tem-se a palavra gon e a descrição contém a palavra Documentary.
+
+Mostre os dois filmes cujos títulos ou finalizam com academy ou iniciam com mosquito.
+
+Mostre os seis filmes que contêm as palavras monkey e sumo em suas descrições.
+
+
+
+
+SELECT * FROM sakila.film
+WHERE title LIKE '%ace%';
+
+SELECT * FROM sakila.film
+WHERE description LIKE '%china';
+
+SELECT * FROM sakila.film
+WHERE description LIKE '%girl%' AND title LIKE '%lord';
+
+USE sakila;
+SELECT * FROM film
+WHERE title LIKE '___gon%';
+
+SELECT * FROM sakila.film
+WHERE title LIKE '___gon%' AND description LIKE '%Documentary%';
+
+SELECT * FROM sakila.film
+WHERE title LIKE '%academy'OR title LIKE 'mosquito%';
+
+SELECT * FROM sakila.film
+WHERE description LIKE '%monkey%' AND description LIKE '%sumo%';
