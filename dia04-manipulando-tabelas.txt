@@ -1,0 +1,19 @@
+Inserir dados em tabelas com INSERT
+Atualizar dados em tabelas com UPDATE
+Apagar dados em tabelas com DELETE
+
+CRUD (Create, Read, Update, Delete) 
+
+-----------
+deletando banco de dados
+botão direito e clique em “Drop Schema“.
+
+Selecione “Drop Now”.
+
+Clique com o botão direito neste link e salve como arquivo .sql.
+
+Retorne para o MySQL Workbench, selecione Abrir Script SQL… e selecione o arquivo sakila.sql.
+
+Clique em executar para restaurar o banco de dados.
+
+Caso necessário, clique no botão de “atualizar schemas”.
