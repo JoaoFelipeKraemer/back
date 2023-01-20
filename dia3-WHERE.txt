@@ -54,6 +54,11 @@ todos filmes que n começam com academy
 SELECT * FROM sakila.film
 WHERE title NOT LIKE 'academy%';
 ================================
+==
+filme q terminam com
+SELECT * FROM sakila.film
+WHERE title LIKE '%don';
+====
 
 PRECEDENCIA DE OPERADORES
 Parenteses> Multiplicação,divisão>subtração, adição>NOT>AND>OR
