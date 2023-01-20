@@ -54,16 +54,15 @@ ORDER BY tabelaB.coluna_de_ordenacao;
 INSERT INTO sakila.actor (first_name, last_name)
 SELECT first_name, last_name FROM sakila.staff;
 
-====
+================
 
 FIXANDO:
-INSERINDO 1 FUNCIONARIO
+1-INSERINDO 1 FUNCIONARIO
 INSERT INTO `sakila`.`staff`
     (first_name, last_name, address_id, email, store_id, active, username, password)
 VALUES
     ('Jaeasea', 'easeasF', 2, 'Eaxaxa@hotmail.com', 1, 1, 'jfk', 'ADAASES');
-
-ISNERINDO 2 FUNCIONARIO
+2-INSERINDO 2 FUNCIONARIO
 
 INSERT INTO `sakila`.`staff`
     (first_name, last_name, address_id, email, store_id, active, username, password)
@@ -72,7 +71,7 @@ VALUES
     ('Xasxaxa', 'Xsxaxaaae', 2, 'xxaxaxaxa@hotmail.com', 1, 1, 'karaa', '21312321');
 
 
-inserindo 5 atores vindo da tabela cstomr
+3-INSERINDO 5 atores vindo da tabela cstomr
 
 INSERT INTO sakila.actor(first_name, last_name)
 	SELECT first_name, last_name
@@ -80,11 +79,11 @@ INSERT INTO sakila.actor(first_name, last_name)
     ORDER BY customer_id
     LIMIT 5;
 
-inserindo novas categorias:
+4-INSERINDO novas categorias:
 
 INSERT INTO sakila.category(name)
 VALUE ('DRAMA'), ('FICÇÃO'), ('HORROR');
 
-inserindo nova loja  em store
+5-INSERINDO nova loja  em store
 INSERT INTO sakila.store (manager_staff_id, address_id)
 VALUES (3, 3);
