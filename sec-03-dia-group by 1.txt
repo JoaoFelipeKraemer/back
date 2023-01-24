@@ -86,3 +86,10 @@ SELECT district, COUNT(*)
 FROM sakila.address
 GROUP BY district
 ORDER BY COUNT(*) DESC;
+
+=================
+GROUP_CONCAT(email), store_id FROM sakila.customer GROUP BY store_id;
+
+SELECT ROUND(AVG(rental_rate), 2) AS media, rating FROM .. GROIUP BY rating
+
+o q n estiver no GROUP BY tem q estar agregado no SELECT
