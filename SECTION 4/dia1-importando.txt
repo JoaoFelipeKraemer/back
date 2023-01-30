@@ -1,0 +1,51 @@
+Importando módulos
+
+MÓDULOS LOCAIS
+
+->PRECISAMOS PASSAR para o require o caminho do módulo, seguindo a mesma assinatura
+EXEMPLO:
+// meuModulo/funcionalidade-1.js
+
+module.exports = function () {
+  console.log('funcionalidade1');
+}
+
+// meuModulo/funcionalidade-2.js
+
+module.exports = function () {
+  console.log('funcionalidade2');
+}
+
+// meuModulo/index.js
+const funcionalidade1 = require('./funcionalidade-1');
+const funcionalidade2 = require('./funcionalidade-2');
+
+module.exports = { funcionalidade1, funcionalidade2 };
+
+
+No exemplo acima, quando importarmos o módulo meuModulo, teremos um objeto contendo duas propriedades,
+ as quais são as funcionalidades que exportamos dentro de meuModulo/index.js.
+
+->>Para importarmos e utilizarmos o módulo meuModulo, basta passar o caminho da pasta como argumento 
+para a função require, desse modo:
+
+// minha-aplicacao/index.js
+const meuModulo = require('./meuModulo');
+
+console.log(meuModulo); // { funcionalidade1: [Function: funcionalidade1], funcionalidade2: [Function: funcionalidade2] }
+
+meuModulo.funcionalidade1();
+
+=======================================
+
+MÓDULOS INTERNOS
+
+Para utilizarmos um módulo interno, devemos passar o nome do pacote como parâmetro para a função require.
+Por exemplo, require('fs') importa o pacote fs, responsável pelo sistema de arquivos.
+
+Uma vez que importamos um pacote, podemos utilizá-lo no nosso código como uma variável da seguinte forma:
+
+const fs = require('fs');
+
+fs.readFileSync('./meuArquivo.txt');
+
