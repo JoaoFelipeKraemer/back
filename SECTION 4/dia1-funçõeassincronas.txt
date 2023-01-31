@@ -1,0 +1,114 @@
+../SECTION 4/
+
+
+
+
+../SECTION 4/dia1.fluxos-assincronos.txt
+
+
+
+Existem duas formas principais para implementarmos código assíncrono em JavaScript, usando Callbacks e Promises.
+
+As Callbacks fornecem uma interface com a qual você pode dizer: “e quando terminar de fazer isso, faça aquilo”. 
+Podemos entender essa relação fazendo uma analogia ao cenário apresentado anteriormente.
+Nesse caso, o Atendente poderia pedir a Pessoa da Cozinha que prepara-se um pedido e ao final 
+tocasse um sininho para avisar que o pedido estava pronto. 🔔 🧑‍🍳
+
+
+Exemplo 1: Tratando erros de forma síncrona.
+
+function dividirNumeros(num1, num2) {
+  if (num2 == 0) throw new Error("Não pode ser feito uma divisão por zero");
+
+  return num1 / num2;
+}
+
+try {
+  const resultado = dividirNumeros(2, 1);
+  console.log(`resultado: ${resultado}`);
+} catch (e) {
+  console.log(e.message);
+}
+
+
+Exemplo 2: Tratando erros de forma assíncrona.
+
+function dividirNumeros(num1, num2) {
+  const promise = new Promise((resolve, reject) => {
+    if (num2 == 0) 
+      reject(new Error("Não pode ser feito uma divisão por zero"));
+
+    const resultado = num1 / num2;
+    resolve(resultado)
+  });
+
+  return promise;
+}
+
+dividirNumeros(2, 1)
+  .then(result => console.log(`sucesso: ${result}`))
+  .catch(err => console.log(`erro: ${err.message}`));
+
+
+No exemplo 2, note que a função dividirNumeros retorna uma Promise, ou seja, ela promete que vai dividir os números.
+ Caso não consiga realizar a divisão, ela rejeita essa promessa, utilizando a função reject. Caso ocorra tudo certo,
+  ela resolve a promessa, utilizando a função resolve.
+======================
+Funções Async/Await
+
+
+Uma função async retorna uma promise, tal como o exemplo abaixo:
+
+
+function dividirNumeros(num1, num2) {
+  const promise = new Promise((resolve, reject) => {
+    if (num2 == 0) 
+      reject(new Error("Não pode ser feito uma divisão por zero"));
+
+    const resultado = num1 / num2;
+    resolve(resultado)
+  });
+
+  return promise;
+}  
+
+
+Contudo, quando você chama a função dividirNumeros com o prefixo await, a execução irá esperar 
+até que a Promise seja resolvida ou rejeitada.
+
+Precisamos ter bastante atenção aqui 😳! A função que fizer a chamada da Promise dividirNumeros 
+(ou qualquer outra função que retorne uma Promise) deve ser definida como async, conforme o exemplo a seguir:
+
+const doSomething = async () => {
+  console.log(await dividirNumeros(2,2));
+};
+
+
+Anota aí 🖊: Toda função na qual utilizamos async, passa automaticamente a retornar uma Promise, 
+que será rejeitada em caso de erro, e resolvida em caso de sucesso.
+
+Como você pode ver no exemplo anterior, nosso código fica muito mais simples e legível. 
+Além disso, os maiores benefícios surgirão quando o código for muito maior e mais complexo.
+
+As funções async podem ser encadeadas facilmente e, além disso, seu código será muito mais legível, 
+se comparado ao uso de Promises. Veja o exemplo a seguir:
+
+const promiseParaFazerAlgumaCoisa = () => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve('Eu fiz alguma coisa'), 2000)
+  })
+}
+
+const assistirAlguemFazendoAlgumaCoisa = async () => {
+  const something = await promiseParaFazerAlgumaCoisa()
+  return something + '\n e Eu vi você fazendo'
+}
+
+const AssistirAlguemAssistindoAlguemFazendoAlgumaCoisa = async () => {
+  const something = await assistirAlguemFazendoAlgumaCoisa()
+  return something + '\n e Eu também vi você vendo ele fazendo'
+}
+
+AssistirAlguemAssistindoAlguemFazendoAlgumaCoisa().then(res => {
+  console.log(res)
+})
