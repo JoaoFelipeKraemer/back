@@ -1,0 +1,3 @@
+: APIs Web são ferramentas definitivas para conectar o front-end de uma aplicação aos dados que ela 
+precisa salvar e receber. O padrão REST, rotas e aplicações C.R.U.D são partes do conhecimento
+ de como se fazer uma boa API - conhecimento que te fará brilhar em inúmeros processos seletivos!
