@@ -1,0 +1,17 @@
+Express
+
+npm i express@4.17.1 --save-exact
+
+Após executar o comando acima, um arquivo e um diretório serão criados automaticamente - 
+o package-lock.json e o node_modules!
+
+O arquivo package-lock.json serve para gerenciar as dependências de nossas dependências;
+O diretório (node_modules) é onde todas as nossas dependências, e dependências de nossas 
+dependências, serão instaladas. 
+
+ossa aplicação depende do pacote Express para funcionar… O pacote Express, por sua vez, depende de outros pacotes para funcionar!
+ Da mesma forma, cada pacote depende de mais pacotes, e aí já podemos concluir que precisamos de uma forma eficaz 
+ de buscar e instalar todos esses pacotes sem erro!
+
+O Node faz isso para nós, de forma que toda vez que instalamos algum pacote em nossa aplicação, o Node “automagicamente”
+ irá instalar as coisas de que esse pacote precisa.
