@@ -15,3 +15,74 @@ ossa aplicação depende do pacote Express para funcionar… O pacote Express, p
 
 O Node faz isso para nós, de forma que toda vez que instalamos algum pacote em nossa aplicação, o Node “automagicamente”
  irá instalar as coisas de que esse pacote precisa.
+
+
+ Linter e Git
+
+ npm i eslint@6.8.0 eslint-config-trybe-backend@1.0.1 --save-dev --save-exact
+
+ arquivos referentes ao Linter
+
+ touch .eslintignore .eslintrc.json
+
+ .eslintignore: Usado para você dizer ao ESLint que ignore arquivos e diretórios específicos;
+.eslintrc.json: Usado para você sobrescrever regras do ESLint;
+
+// .eslintignore
+
+node_modules
+
+
+// .eslintrc.json
+{
+  "env": {
+    "es2020": true
+  },
+  "extends": "trybe-backend",
+  "rules": {
+    "sonarjs/no-duplicate-string": ["error", 5]
+  }
+}
+
+Finalize inicializando um repositório git na pasta da aplicação,
+ criando e configurando o arquivo .gitignore:
+
+git init && touch .gitignore
+
+// .gitignore
+
+node_modules
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Criando o servidor
+
+criar arquivo app.js e server.js na pasta src.
+Vamos começar pelo arquivo app.js:
+
+// src/app.js
+const express = require('express');
+
+const app = express();
+
+module.exports = app;
+
+Agora, dentro do arquivo server.js, escreva o trecho de código abaixo:
+
+// src/server.js
+const app = require('./app');
+
+app.listen(3001, () => console.log('server running on port 3001'));
+
+-->npm start
+
+->> 
+sudo lsof -i :3000 = lista  o PID. numero do processo da porta
+kill -9 PID = mata o processo
+
+o pacote do nodemon. Usando o servidor com nodemon, toda vez que você salvar algum arquivo, ele 
+reinicia sua aplicação automagicamente! 🪄
+
+-->npm i nodemon@2.0.15 --save-dev --save-exact
+
+-->npm run dev
