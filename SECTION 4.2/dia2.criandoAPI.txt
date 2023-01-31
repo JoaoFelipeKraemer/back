@@ -1,0 +1,117 @@
+Listando times por meio do método GET
+
+// src/app.js
+
+// const express = require('express');
+
+const teams = [
+  {
+    id: 1,
+    name: 'São Paulo Futebol Clube',
+    initials: 'SPF',
+  },
+  {
+    id: 2,
+    name: 'Clube Atlético Mineiro',
+    initials: 'CAM',
+  },
+];
+
+// ...
+
+
+// src/app.js
+
+
+
+// app.get('/', (req, res) => res.status(200).json({ message: 'Olá Mundo!' }));
+
+app.get('/teams', (req, res) => res.status(200).json({ teams }));
+
+// module.exports = app;
+==============================
+Cadastrando times por meio do método POST=
+
+// src/app.js
+
+// ...
+
+// app.get('/teams', (req, res) => res.status(200).json({ teams }));
+
+ app.use(express.json());
+
+app.post('/teams', (req, res) => {
+  const newTeam = { ...req.body };
+  teams.push(newTeam);
+
+  res.status(201).json({ team: newTeam });
+});
+
+// module.exports = app;
+
+THUNDER CLIENT
+
+
+=================
+
+Editando times por meio do método PUT
+
+
+// src/app.js
+
+// ...
+
+app.put('/teams/:id', (req, res) => {
+  const { id } = req.params;
+  const { name, initials } = req.body;
+
+  const updateTeam = teams.find((team) => team.id === Number(id));
+
+  if (!updateTeam) {
+    res.status(404).json({ message: 'Team not found' });
+  }
+
+  updateTeam.name = name;
+  updateTeam.initials = initials;
+  res.status(200).json({ updateTeam });
+});
+
+// ...
+
+Após salvar o arquivo app.js, o servidor será reiniciado e você poderá ir até 
+o Thunder Client fazer uma requisição do tipo PUT. Para isso, altere o método para PUT e a URL para
+ http://localhost:3001/teams/1. Em seguida, no Body, coloque o seguinte Json:
+
+ // No Thunder Client
+
+{
+  "id": "1",
+  "name": "Fortaleza Esporte Clube",
+  "initials": "FOR"
+}
+========================    
+Deletando times por meio do método DELETE
+
+Para finalizar nossa API, vamos deletar um clube por id. Assim como no endpoint da alteração, 
+vamos receber este id por parâmetro, pesquisá-lo no array e deletá-lo.
+ Crie um endpoint do tipo DELETE com a rota /teams/:id e escreva o trecho de código abaixo:
+
+
+ // src/app.js
+
+// ...
+
+app.delete('/teams/:id', (req, res) => {
+  const { id } = req.params;
+  const arrayPosition = teams.findIndex((team) => team.id === Number(id));
+  teams.splice(arrayPosition, 1);
+
+  res.status(200).end();
+});
+
+// ...
+
+Novamente capturamos o id vindo da URL, encontramos o índice dele no array
+ teams com a função findIndex, do JavaScript, e removemos o time do array
+  com a função splice, também do JavaScript. Ao final, apenas retornamos um 
+  status code 200 dizendo que está tudo ok e encerramos a requisição.
