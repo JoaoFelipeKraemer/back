@@ -1,0 +1,69 @@
+Leitura e Escrita de Arquivos
+
+A leitura e escrita de arquivos é uma rotina muito realizada nas operações de back-end. Você pode, por exemplo:
+
+armazenar os logs da sua aplicação;
+ler arquivos de configurações para ações específicas;
+exportar dados em um arquivo CSV.
+
+======================
+
+
+Lendo arquivos com métodos assíncronos =>> fs.READFILE
+
+O método fornecido pelo módulo fs para leitura assíncrona de arquivos é o fs.readFile 
+
+Observação: Para utilizar as operações assíncronas do fs, precisamos alterar a importação
+ do módulo fs para ('fs').promises. Dessa forma, poderemos chamar as funções assíncronas 
+ para leitura e escrita de arquivos que retornarão Promises.
+
+
+const fs = require('fs').promises;
+
+async function main() {
+  try {
+    const data = await fs.readFile('./meu-arquivo.txt', 'utf-8');
+    console.log(data);
+  } catch (err) {
+    console.error(`Erro ao ler o arquivo: ${err.message}`);
+  }
+}
+
+main() 
+
+
+Note que para podermos utilizar o async/await, precisamos criar uma 
+função main e colocar nossa lógica dentro dela. Isso acontece porque
+ o await só pode ser utilizado dentro de funções async.
+
+===============================================
+
+Escrevendo dados em arquivos  =>> fs.WRITEFILE
+
+O método fornecido pelo módulo fs para leitura assíncrona de arquivos é o fs.readFile
+
+
+const fs = require('fs').promises;
+
+async function main() {
+  try {
+    await fs.writeFile('./meu-arquivo.txt', 'Meu textão');
+    console.log('Arquivo escrito com sucesso!');
+  } catch (err) {
+    console.error(`Erro ao escrever o arquivo: ${err.message}`);
+  }
+}
+
+main()
+
+IMPORTANTE:
+
+No writeFile, assim como ocorre no readFile, você pode especificar algumas opções na escrita de 
+arquivos passando um terceiro parâmetro (flag) opcional em seus métodos.
+
+A opção flag especifica como o arquivo deve ser aberto e manipulado. O padrão é 'w', que especifica que
+ o arquivo deve ser aberto para escrita.
+
+Observação: Se o arquivo não existir, ele é criado. Caso contrário, é reescrito, ou seja, tem seu 
+conteúdo apagado antes de o novo conteúdo ser escrito. A flag 'wx', por exemplo, funciona como 'w',
+ mas lança um erro caso o arquivo já exista.
