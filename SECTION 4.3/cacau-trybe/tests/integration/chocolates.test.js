@@ -1,7 +1,7 @@
 // tests/integration/chocolates.test.js
 
 const chai = require('chai');
-
+const app = require('../../src/app');
 const { expect } = chai;
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
