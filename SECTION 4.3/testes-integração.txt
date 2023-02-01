@@ -1,0 +1,91 @@
+Testes de Ponta-a-ponta: também chamados de Fim-a-fim (End-to-End; E2E),
+ pressupõem um fluxo de interação completo com a aplicação, de uma ponta a outra.
+
+Aqui, poderíamos pensar em uma API que utiliza nossa calculadora - 
+assim como diversas outras funções mais complexas - na hora de realizar uma operação de venda de produtos.
+
+De olho na dica 👀: Esse teste é o mais completo, pois necessita que todos os demais testes tenham sido desenvolvidos.
+
+==========
+
+TESTES AUTOMATIZADOS
+
+Mocha
+-->>Os testes do Mocha são executados em série, permitindo relatórios flexíveis e precisos, enquanto mapeia
+ exceções não capturadas para os casos de teste corretos. E para complementar os testes do Mocha 
+ temos o chai, que é uma biblioteca de asserção, e o sinon, que implementa dubles de teste, como: spies, stubs e mocks.
+
+
+O mocha é um framework de testes para JS, isso significa que ele nos ajuda a arquitetar os nossos testes fornecendo 
+a estrutura e interface para escrevermos eles.
+
+Vamos começar pelos comportamentos: precisamos definir o que estamos testando em um caso específico.
+ Para isso, o mocha nos fornece duas palavras reservadas: 
+
+DESCRIBE -->  como o próprio nome já diz, nos permite adicionar uma descrição para um teste específico ou um grupo de testes.
+
+*o describe aceita dois parâmetros:(I) o primeiro é uma string, onde podemos passar a descrição,
+ (II) o segundo é uma função para executar o cenário de teste.
+
+*Outro ponto de atenção é, que não é necessário importar o mocha em nosso arquivo, pois suas palavras 
+reservadas serão interpretadas quando executarmos os testes, mas veremos mais adiante como fazê-lo.
+===========
+describe('Quando a média for menor que 7', function () {
+  //
+});
+
+===========
+
+
+IT --> nos permite sinalizar exatamente o cenário que estamos testando naquele ponto.
+
+**Descrito nosso comportamento, vamos adicionar o que será testado de fato, ou seja, o que é esperado. Para isso, usamos o it:
+======
+describe('Quando a média for menor que 7', function () {
+  it('retorna "reprovação"', function () {
+    //
+  });
+});
+=========
+🖊: A sintaxe do it é bem semelhante a do describe: ela aceita uma string, que define
+ o comportamento a ser testado, e uma função que executa os testes de fato.
+
+Aferindo testes com o Chai
+
+->O chai nos ajudará com as asserções, ou seja, ele nos fornece maneiras de dizermos o que 
+queremos testar validando se o resultado condiz com o esperado.
+
+*Para de fato testar nossa função, precisamos chamá-la passando o input desejado e então validar se a resposta é aquela que esperamos.
+*Essa validação é o que chamamos de assertion, “asserção” ou, em alguns casos, “afirmação”.
+==========
+const { expect } = require('chai');
+const resposta = calculaSituacao(4);
+
+expect(resposta).equals('reprovação');
+=======
+
+**a asserção equals é uma das diversas asserções disponíveis no chai. A lista completa pode ser encontrada NO LINK:
+ https://www.chaijs.com/api/bdd/
+
+**Para tornar nosso teste ainda mais legível e elegante, o chai nos fornece 
+outros getters encadeáveis que possuem um papel puramente estético.
+
+Por exemplo, o to e o be, que nos permitem escrever nossa assertion da seguinte maneira:
+
+==========
+const { expect } = require('chai');
+
+const calculaSituacao = require('../examples/calculaSituacao');
+
+describe('Quando a média for menor que 7', function () {
+  it('retorna "reprovação"', function () {
+    const resposta = calculaSituacao(4);
+
+    expect(resposta).to.be.equals('reprovação');
+  });
+});
+
+========
+
+->em package.json adicionar ao scripts: 
+test: mocha/tests/**/*.test.js --exit
