@@ -1,0 +1,19 @@
+Testes de Integração
+
+Os testes de integração, ou integration tests, servem para verificar se a comunicação entre os componentes 
+de um sistema está ocorrendo da forma esperada. Diferentemente dos testes unitários, onde isolamos as unidades,
+ a ideia aqui é juntar todas elas e ver a mágica acontecer.
+
+ --> Nossa integração, por enquanto, partirá do recebimento do objeto da requisição (request) em uma API, seguindo por funções 
+ incorporadas pelo endpoint até a devolução do objeto de resposta (response) dessa requisição.
+
+
+
+ Para melhor exemplificar a prática do TDD com testes de integração, mais adiante, iremos construir uma API 
+ empregando esses dois conceitos. Começaremos pela definição dos cenários de teste e à medida que os testes falharem,
+  desenvolveremos funcionalidades necessárias para que o teste seja executado com sucesso. 
+  Vamos repetir esse processo até que todos os cenários tenham sido desenvolvidos.
+
+  ->Afinal, como são definidos os cenários de uma API?
+
+  Resposta: É por meio dos contratos de uma API que definimos os cenários que devem ser testados e desenvolvidos.
