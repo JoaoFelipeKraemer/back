@@ -1,0 +1,27 @@
+ESCREVENDO TESTES 
+
+mkdir cacau-trybe
+cd cacau-trybe
+npm init -y
+npm install mocha@8.4.0 chai@4.3.4 --save-dev --save-exact
+
+package.json CONFIGURAÇÃO:
+    "scripts": {
+    "test": "mocha tests/**/*.test.js --exit"
+  },
+
+
+============
+
+temos uma boa definição de asserções para começarmos, mas que deve falhar, pois além de não existirem
+funcionalidades da nossa API, minhaRequisicao() é um placeholder (está só de enfeite) sem funcionalidade
+Com isso, precisamos de algum recurso que nos ajude na validação à medida que formos construindo a API.
+
+⚠️ Aviso: Para nos ajudar com esse desafio, utilizaremos o plugin Chai HTTP! 
+Com ele poderemos simular uma request a nossa API sem inicializá-la manualmente.
+
+npm install chai-http@4.3.0 --save-dev --save-exact
+
+
+o chai-http vai criar seu próprio listen(), escolher uma porta automaticamente, 
+fazer a requisição ao endpoint e, por último, retornar o resultado dessa requisição.
