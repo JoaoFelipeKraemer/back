@@ -22,6 +22,14 @@ app.use(express.json());
 app.get('/teams', (req, res) => res.json(teams));
 
 app.post('/teams', validateTeam, (req, res) => {
+  if (
+    // confere se a sigla proposta está inclusa nos times autorizados
+    !req.teams.teams.includes(req.body.sigla)
+    // confere se já não existe um time com essa sigla
+    && teams.every((t) => t.sigla !== req.body.sigla)
+  ) {
+    return res.status(422).json({ message: 'Já existe um time com essa sigla'});
+  }
   const team = { id: nextId, ...req.body };
   teams.push(team);
   nextId += 1;
