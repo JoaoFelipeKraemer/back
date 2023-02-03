@@ -1,0 +1,161 @@
+Criando o endpoint de cadastro de pessoa
+
+No subdiretório src/routes vamos criar o arquivo src/routes/peopleRoutes.js com o seguinte conteúdo:
+
+// src/routes/peopleRoutes.js
+
+const express = require('express');
+
+const router = express.Router();
+
+router.post('/', (req, res) => {
+  const person = req.body;
+  res.status(201).json(person);
+});
+
+module.exports = router;
+
+
+
+No trecho de código acima, estamos criando o endpoint POST /. No corpo da requisição é esperado 
+um arquivo JSON (o mesmo que definimos no teste de integração) e simplesmente retornamos o mesmo 
+JSON como resposta, cujo código de estado é igual a 201.
+
+
+
+Vamos adicionar o seguinte trecho de código para que o express publique nossa rota:
+
+
+// src/app.js
+
+// const express = require('express');
+const peopleRoutes = require('./routes/peopleRoutes');
+
+// const app = express();
+
+// app.use(express.json());
+
+app.use('/people', peopleRoutes);
+
+// module.exports = app;
+
+
+No trecho de código acima:
+
+Adicionamos uma variável peopleRoutes com o router exportado no arquivo src/routes/peopleRoutes.js;
+Adicionamos esse middleware definindo que toda requisição em que o path comece com /people seja encaminhada para ele.
+
+npm test
+q falha:
+
+Realizando a comunicação com o MySQL
+
+Chegou o tão aguardado momento de interagir com o servidor MySQL! 🙏
+
+Vamos criar arquivo src/db/peopleDB.js, que tem como responsabilidade agrupar todas as operações SQL relacionadas a tabela people.
+ Inicialmente vamos escrever o código necessário para inserir uma pessoa no banco de dados, mas ao longo do dia adicionaremos 
+ código referente a outras operações.
+
+O arquivo deve conter o seguinte conteúdo:
+
+// src/db/peopleDB.js
+
+const conn = require('./connection');
+
+const insert = (person) => conn.execute(
+    `INSERT INTO people 
+      (first_name, last_name, email, phone) VALUES (?, ?, ?, ?)`,
+    [person.firstName, person.lastName, person.email, person.phone],
+  );
+
+module.exports = {
+  insert,
+};
+
+
+
+Inicialmente importamos a conexão com o MySQL do nosso outro módulo e, em seguida, editamos a função insert
+ para receber como parâmetro um objeto person. Nela escrevemos o código referente a um INSERT no banco de dados. 
+ Então, chamamos a função conn.execute(), a qual recebe dois parâmetros:
+
+Uma string que contém um INSERT de dados na tabela people. Note que a string foi definida utilizando-se crase para 
+possibilitar a quebra de linhas, mas pode-se utilizar as aspas simples ou duplas;
+
+Um array de valores que são extraídos do objeto person;
+Vale destacar que no final da string que contém o SQL INSERT, existem quatro sinais de interrogação. 
+Você pode estar se perguntando: “Esse SQL não está escrito errado?” 🤔
+
+Esses símbolos de interrogação são chamados de placeholders (ou marcadores, em português). Sua função é de
+ justamente marcar os locais que serão substituídas pelos valores dentro da consulta SQL.
+
+E quais são esses valores que substituirão os sinais de interrogação? 🤔
+
+São justamente os valores do array que passamos como segundo parâmetro da função conn.execute()! A chamada da
+ função conn.execute() com os dois parâmetros citados é o que caracteriza uma prepared statement no mysql2.
+
+Podemos pensar nas Prepared Statements como um template ou um molde para consultas SQL que uma aplicação deseja
+ executar, e que pode ser customizado utilizando variáveis de parâmetros (os placeholders ou marcadores). 
+ Isso nos oferece dois grandes benefícios:
+
+As consultas SQL só necessitam ser preparadas uma única vez, entretanto podem ser executadas múltiplas vezes com 
+os mesmos parâmetros ou com parâmetros diferentes. Quando uma consulta é preparada, o banco de dados irá analisar
+, compilar e otimizar a execução da consulta;
+
+Os parâmetros das prepared statements não devem ser vinculadas diretamente na consulta SQL (utilizando concatenação 
+de string, por exemplo). O recurso das prepared statements identifica os parâmetros para o banco de dados, evitando 
+que ele erroneamente interprete strings como parte da consulta. Se uma aplicação utiliza prepared statements em todas
+ as operações que realiza com o banco de dados, essas operações estão seguras contra o ataque do tipo SQL injection.
+
+⚠️ Atenção: SQL injection é um tipo de ataque malicioso que uma aplicação Web pode sofrer através de injeção de código 
+SQL em entradas que não tratam os dados de forma adequada (e.g. formulários, APIs REST, etc). O relatório anual de 2021 
+da Open Web Application Security Project (OWASP) apontou os ataques de injeção (categoria do SQL injection) como 
+o terceiro maior vetor de ataques maliciosos contra aplicações Web. 😨
+
+Na execução dessa prepared statement, os placeholders serão substituídos pelos valores do array seguindo a 
+mesma ordem nos quais eles foram declarados, ou seja, o primeiro placeholder será substituído pelo primeiro
+ valor do array; o segundo placeholder será substituído pelo valor do segundo valor do array e assim sucessivamente
+  até o último. Dessa forma, podemos reutilizar esse INSERT apenas passando valores diferentes para o array!
+
+Agora que temos uma prepared statement para inserir uma pessoa, vamos refatorar o endpoint POST / para que ele consiga
+ realizar o cadastro de uma pessoa no banco de dados:
+
+// src/routes/peopleRoutes.js
+
+// const express = require('express');
+const peopleDB = require('../db/peopleDB');
+
+// const router = express.Router();
+
+router.post('/', async (req, res) => {
+  const person = req.body;
+  try {
+    const [result] = await peopleDB.insert(person);
+    res.status(201).json({
+      message: `Pessoa cadastrada com sucesso com o id ${result.insertId}` });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Ocorreu um erro ao cadastrar uma pessoa' });
+  }
+});
+// module.exports = router;
+
+No código acima, importamos o módulo de src/db/peopleDB.js. No endpoint POST /, criamos 
+a variável person para receber os dados da pessoa a ser cadastrada.
+
+Em seguida, temos um bloco try/catch responsável por responder a requisição. Dentro do bloco try
+ é utilizada a função insert passando como parâmetro os dados recebidos na requisição e, por conta 
+ do await, aguardamos a inserção da pessoa no banco de dados.
+
+Se a inserção ocorrer com sucesso, é retornada uma resposta com o status 201 e com um JSON contendo 
+uma mensagem indicando o sucesso da operação.
+
+Em caso de erro, ele é impresso no terminal via console.log e é retornada uma resposta com o status
+ 500 e com um JSON contendo uma mensagem indicando a falha na operação.
+
+Nesse ponto, podemos iniciar a nossa aplicação com o comando npm start e realizar uma requisição do 
+tipo POST com o Thunder para a nossa API, passando o seguinte JSON:
+
+
+
+
+
