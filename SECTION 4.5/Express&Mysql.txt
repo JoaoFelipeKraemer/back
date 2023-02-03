@@ -1,0 +1,130 @@
+Faremos um projeto.
+
+msql no docker
+
+Chegou o grande momento no qual você realizará consultas a um banco 
+de dados MySQL por meio de uma API REST desenvolvida com o auxílio do Express.
+
+Além disso, colocaremos Docker nessa receita! Ou melhor, criaremos
+ uma receita com o docker compose que permitirá o uso do MySQL dentro de um container Docker!
+
+ ->Você criará um docker compose que iniciará um ambiente com o container MySQL que você utilizará ao longo do dia. 😎
+
+ ->Na raiz do projeto (diretório trybecash-api), vamos criar o arquivo docker-compose.yaml com o seguinte conteúdo:
+
+Configurando o MySQL no Express
+->Primeiramente, vamos instalar as dependências necessárias para configurarmos um projeto Express 
+capaz de conectar ao MySQL. No diretório raiz do projeto, execute o seguinte comando:
+
+npm i express@4.17.1 mysql2@2.3.3 --save-exact
+
+
+-> Precisaremos criar em nossa aplicação o arquivo src/db/connection.js, que será responsável por realizar a conexão com o 
+servidor MySQL utilizando a biblioteca mysql2:
+
+
+Para começar, vamos instalar as dependências necessárias para escrevermos nossos testes de integração.
+ Então, execute o seguinte comando para realizar a instalação das dependências mocha, chai, sinon e chai-http 
+ como dependências de desenvolvimento:
+ npm i mocha@10.0.0 chai@4.3.6 sinon@14.0.0 chai-http@4.3.0 -D
+
+
+
+ ===================
+Que tal começarmos criando uma pessoa no banco de dados? Então antes de escrever o teste e, 
+consequentemente, nosso código, vamos entender o fluxo de cadastro de pessoas que iremos implementar.
+
+O fluxo se dará da seguinte maneira:
+
+Primeiramente receberemos uma requisição para o endpoint POST /people. Essa requisição
+ terá no seu corpo um JSON com os dados a serem cadastrados no banco de dados similar ao seguinte:
+{
+  "firstName": "Luke",
+  "lastName": "Skywalker",
+  "email": "luke.skywalker@trybe.com",
+  "phone": "851 678 4453"
+}
+
+Em seguida, o express passará o JSON recebido na requisição para um componente de software (o qual iremos desenvolver 😉)
+ que irá enviar uma declaração SQL INSERT para o MySQL;
+
+Após o envio do comando SQL inserção da pessoa no MySQL, receberemos uma resposta do MySQL sobre a operação;
+
+Enviamos a resposta para a requisição com o código de estado 201 se a operação ocorreu com sucesso, ou o código
+ de estado 500 caso algum erro ocorrer durante o processo de cadastro da pessoa no MySQL.
+================================
+//  tests/integration/people.test.js
+
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const sinon = require('sinon');
+
+const app = require('../../src/app');
+const connection = require('../../src/db/connection');
+
+const { expect, use } = chai;
+
+use(chaiHttp);
+
+describe('Testando os endpoints de people', function () {
+  it('Testando o cadastro de uma pessoa ', async function () {
+    sinon.stub(connection, 'execute').resolves([{ insertId: 42 }]);
+
+    const response = await chai
+      .request(app)
+      .post('/people')
+      .send(
+        {
+          firstName: 'Luke',
+          lastName: 'Skywalker',
+          email: 'luke.skywalker@trybe.com',
+          phone: '851 678 4453',
+        },
+      );
+
+    expect(response.status).to.equal(201);
+    expect(response.body).to.
+      deep.equal({ message: 'Pessoa cadastrada com sucesso com o id 42' });
+  });
+
+  afterEach(sinon.restore);
+});
+
+================
+
+Com esse código ACIMA, fazemos as importações necessárias para realizar os testes de integração.
+
+Em seguida são criadas as variáveis app e connection que fazem referência aos módulos src/app.js e src/db/connection.js. 
+Teremos apenas um describe que agrupará os testes relacionados ao endpoint people.
+
+Dentro do describe criado, temos um caso de teste (declaração it) que realiza duas tarefas:
+
+Cria um stub com o sinon na função execute de connection, de maneira que quando essa função for chamada no teste,
+ ela retornará um array contendo um objeto com a chave insertId com o valor 42.
+
+Uma requisição ao endpoint POST /people passando um JSON com os dados da pessoa a ser cadastrada no corpo da requisição.
+
+
+Dica:  caso tenha curiosidade em saber como são os testes da biblioteca mysql2  https://github.com/sidorares/node-mysql2
+
+Em resumo: só precisamos testar o comportamento da nossa aplicação até a chamada 
+da função connection.execute() (que criamos o mock), que retornará um resultado conhecido e, 
+de posse desse resultado, verificará se a aplicação gera a resposta apropriada.
+=========================
+Para podermos executar o nosso teste (e vermos ele falhar 😛), temos que alterar a chave test dos scripts do package.json:
+
+{
+  ...
+  "scripts": {
+    ...
+    "test": "mocha tests/**/*$NAME*.test.js --exit"
+  },
+  ...
+}
+
+
+npm test
+
+
+O erro apresentado está nos informando que o nosso teste esperava receber um código de estado 201, mas ele 
+recebeu o código 404. Isso ocorre porque não criamos ainda o endpoint /people!
