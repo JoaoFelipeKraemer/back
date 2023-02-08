@@ -1,0 +1,9 @@
+Middlewares Assíncronos
+
+Ok, você já aprendeu como configurar um middleware global, ou seja, que intercepta todas ou quase todas as rotas.
+ Agora, veja como você implementaria esse middleware nas próximas explicações.
+
+Suponha que você tem um arquivo authdata.json com um objeto mapeando tokens com as informações dos 
+apps que usam nossa API. Quando uma requisição chega, ela precisa ter um cabeçalho X-API-TOKEN com
+ um token presente nesse arquivo. Se não tiver o cabeçalho ou se não tiver um token válido, vamos 
+ responder com o código http 401 Unauthorized.

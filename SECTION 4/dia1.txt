@@ -1,0 +1,83 @@
+Módulos Node
+
+Anota aí 🖊: um módulo em Node.js é um “pedaço de código”, o qual pode ser organizado em um ou mais arquivos,
+ que possui escopo próprio. Ou seja, suas variáveis, funções, classes e afins só estão disponíveis nos arquivos
+  que fazem parte daquele módulo.
+Em outras palavras, um módulo é uma funcionalidade, ou um conjunto de funcionalidades, que se
+ encontram isoladas do restante do código. O Node.js possui três tipos de módulos: internos, locais e de terceiros.
+=================
+ Módulos internos
+Os módulos internos (ou core modules) são inclusos no Node.js e instalados junto com ele quando baixamos o 
+runtime. Alguns exemplos de core modules são:
+
+ fs: fornece uma API para interagir com o sistema de arquivos de forma geral;
+
+url: provê utilitários para ler e manipular URLs;
+
+util: oferece ferramentas e funcionalidades comumente úteis a pessoas programadoras.
+
+os: oferece ferramentas e funcionalidades relacionadas ao sistema operacional.
+
+==============
+
+Módulos locais
+Os módulos locais são aqueles definidos juntamente à nossa aplicação. Eles representam
+as funcionalidades ou partes do nosso programa que foram separados em arquivos
+diferentes. Podem ser publicados no NPM, para que outras pessoas possam baixá-los e
+utilizá-los, o que nos leva ao nosso próximo e último tipo de módulo
+
+====================
+
+Módulos de terceiros
+
+Os módulos de terceiros são aqueles criados por outras pessoas desenvolvedoras e
+disponibilizados para uso por meio do npm. Nós também podemos criar e publicar nossos
+próprios módulos, seja para utilizarmos em diversas aplicações diferentes, seja para permitir que outras pessoas os utilizem.
+ Veremos como fazer isso adiante, para isso continue a leitura.
+
+ =========
+
+ NPM-- NODE PACKAGE MANAGER
+
+ NOS PERMITE INSTALAR E GERENCIAR MODULOS CRIADOS POR OUTRAS PESSOAS EM NOSSA APLICAÇÃO
+
+ ---------
+ const path = require('path');
+ log(path.dirname) = passa caminho e  extrai o nome do diretorio
+ log(path.resolve) = passa conjunto de nome para gerar um caminho
+
+ -------------------
+
+ Maneiras de importar e exportar módulos
+
+Quando queremos utilizar o conteúdo de um módulo ou pacote de outro arquivo no Node.js, 
+precisamos importar esse módulo/pacote para o contexto atual no qual estamos.
+
+Para isso, existem dois sistemas de módulos difundidos na comunidade JavaScript:
+
+Módulos ES6 e Módulos CommonJS.;
+
+=================
+ES6
+Nessa especificação, os módulos são importados utilizando a palavra-chave import, tendo como 
+contrapartida a palavra-chave export para exportá-los.
+
+Transpiladores são ferramentas que leem o código-fonte escrito em uma linguagem como o Node.js e
+ produzem o código equivalente em outra linguagem.
+
+Supersets são linguagens que utilizam um transpilador para adicionar novas funcionalidades ao JavaScript.
+===================
+Módulos CommonJS.
+
+No CommonJS as palavras-chaves utilizadas para importação e exportação de módulos são, respectivamente, require() e module.exports.
+
+Para exportar algo no sistema CommonJS, utilizamos a variável global module.exports, atribuindo a ela o valor que desejamos exportar:
+// brlValue.js
+const brl = 5.37;
+
+module.exports = brl;
+
+Como vimos anteriormente, um módulo possui um escopo isolado, 
+ou seja, suas funções, variáveis, classes e demais definições existem somente dentro do módulo.
+
+module.exports  pode receber qualquer valor válido em JavaScript, incluindo objetos, classes, funções e afins.

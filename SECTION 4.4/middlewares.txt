@@ -1,0 +1,77 @@
+node.js: EXPRESS e Middlewares
+
+OQ APRENDEREI
+-->Definir o que são middlewares;
+
+-->Identificar o que são middlewares;
+
+-->Empregar o encadeamento de middlewares usando a função next.
+
+-->Empregar middlewares assíncronos no express.
+
+-->Empregar a passagem de valores entre middlewares.
+
+-->Empregar middlewares para tratamento de erros.
+
+-->Empregar o uso de rotas aplicando o Router.
+
+
+-->Os middlewares irão proporcionar melhor comunicação e maior desempenho nas requisições entre servidor
+ e pessoa cliente. Por exemplo, se uma pessoa fizer uma requisição em um formato não reconhecido pelo servidor,
+  ele pode lançar um erro informando que não reconhece aquela situação. Por outro lado, se esse servidor 
+  possuir um middleware específico para a “tradução” entre formatos, essa comunicação poderá ocorrer sem nenhum prejuízo
+
+Sendo assim, você vai observar os middlewares sendo aplicados com os principais objetivos:
+
+-Adicionar funcionalidade de autenticação para dar acesso alguma parte da sua aplicação;
+-Definir respostas específicas com o status HTTP;
+-Reutilizar a lógica em várias rotas da aplicação.
+
+****relembrando****
+EXPRESS:  é um framework com um objetivo central: receber requisições e enviar respostas. 
+Você já viu como ele usa funções que recebem requisição (req) e resposta (res) como parâmetros.
+ Agora, você verá como essas funções podem ser decompostas em funções menores, que podem ser aproveitadas em diversas rotas.
+
+
+Refatorando um middleware:
+soccer team manager
+arquivo refatora.js
+
+ 
+🚀1 Crie um middleware existingId para garantir que o id passado como parâmetro na rota GET /teams/:id existe no objeto teams.
+ Refatore essa rota para usar o middleware.
+app soccer
+//...
+const existingId = (req, res, next) => {
+  const id = Number(req.params.id);
+
+  if (teams.some((t) => t.id === id)) {
+    // se existe, a requisição segue para o próximo middleware
+    return next();
+  }
+
+  // se não existe, então vamos retornar o status HTTP 404
+  res.sendStatus(404);
+};
+//...
+
+// usa o middleware
+app.get("/teams/:id", existingId, (req, res) => {
+  const id = Number(req.params.id);
+  const team = teams.find(t => t.id === id);
+  res.json(team);
+});
+
+
+
+🚀2 Reaproveite esse middleware e refatore as rotas PUT /teams/:id e DELETE /teams/:id para usarem ele também.
+
+
+
+
+
+🚀3 Mova o middleware validateTeam para o arquivo src/middlewares/validateTeam.js, mas continue usando o middleware nas rotas
+ POST /teams e PUT /teams/:id.
+
+🚀4 Mova o middleware existingId para o arquivo src/middlewares/existingId.js, mas continue usando o middleware nas rotas PUT
+ /teams/:id e DELETE /teams/:id.

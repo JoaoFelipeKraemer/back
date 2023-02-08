@@ -1,0 +1,164 @@
+Retomando o problema do arquivo CacauTrybeFile.json, vamos ver na prática como podemos criar um dublê para a função de leitura do fs.
+
+->
+: Vale ressaltar que o dublê de teste não se restringe a funções específicas, 
+como a leitura com o fs. O que precisamos ter em mente, ao definir um dublê, é o motivo pelo qual estamos isolando essa função.
+
+
+Neste nosso caso, o motivo racional é que o gerenciamento dos arquivos ultrapassa o escopo de nossa aplicação.
+
+Para nos ajudar na criação e utilização dos dublês, utilizaremos a ferramenta Sinon,
+ a qual fornece funções para diversos tipos dos Test Doubles.
+
+ No momento, focaremos em um tipo de Test Double, o stub.
+
+ *Stubs são objetos que podemos utilizar para simular interações com dependências externas ao que estamos testando de fato.*
+
+INSTAÇÃO Sinon
+npm install sinon@11.1.1 --save-dev --save-exact
+
+Agora, vamos ver na prática como podemos criar um stub para a função readFile() do fs:
+
+// tests/integration/chocolates.test.js
+
+//const chai = require('chai');
+//const chaiHttp = require('chai-http');
+const sinon = require('sinon');
+const fs = require('fs');
+
+//const app = require('../../src/app');
+
+//const { expect } = chai;
+
+//chai.use(chaiHttp);
+
+const mockFile = JSON.stringify({ 
+  brands: [
+    {
+      id: 1,
+      name: 'Lindt & Sprungli',
+    },
+    {
+      id: 2,
+      name: 'Ferrero',
+    },
+    {
+      id: 3,
+      name: 'Ghirardelli',
+    },
+  ],
+  chocolates: [
+    {
+      id: 1,
+      name: 'Mint Intense',
+      brandId: 1,
+    },
+    {
+      id: 2,
+      name: 'White Coconut',
+      brandId: 1,
+    },
+    {
+      id: 3,
+      name: 'Mon Chéri',
+      brandId: 2,
+    },
+    {
+      id: 4,
+      name: 'Mounds',
+      brandId: 3,
+    },
+  ],
+});
+
+//describe('Testando a API Cacau Trybe', function () {
+      sinon.stub(fs.promises, 'readFile')
+        .resolves(mockFile);
+//describe('Usando o método GET em /chocolates', function () {
+  //it('Retorna a lista completa de chocolates!', async function () {
+
+//...
+O stub irá interceptar, durante o teste, todas as chamadas a função readFile(), portanto, é imprescindível 
+que os valores passados em resolves sejam do mesmo tipo que a função original.
+
+Vamos testar nosso dublê?
+
+
+ A função restore() desempenha um papel muito importante quando utilizamos stubs, 
+ pois é ela que vai garantir que o stub de um teste não seja replicado para os testes seguintes.
+
+
+// tests/integration/chocolates.test.js
+
+const chai = require('chai');
+const app = require('../../src/app');
+const { expect } = chai;
+const chaiHttp = require('chai-http');
+chai.use(chaiHttp);
+const sinon = require('sinon');
+const fs = require('fs');
+const mockFile = JSON.stringify({ 
+    brands: [
+      {
+        id: 1,
+        name: 'Lindt & Sprungli',
+      },
+      {
+        id: 2,
+        name: 'Ferrero',
+      },
+      {
+        id: 3,
+        name: 'Ghirardelli',
+      },
+    ],
+    chocolates: [
+      {
+        id: 1,
+        name: 'Mint Intense',
+        brandId: 1,
+      },
+      {
+        id: 2,
+        name: 'White Coconut',
+        brandId: 1,
+      },
+      {
+        id: 3,
+        name: 'Mon Chéri',
+        brandId: 2,
+      },
+      {
+        id: 4,
+        name: 'Mounds',
+        brandId: 3,
+      },
+    ],
+  });
+  describe('Testando a API Cacau Trybe', function () {
+    beforeEach(function () {
+      sinon.stub(fs.promises, 'readFile')
+        .resolves(mockFile);
+    });
+  
+    afterEach(function () {
+      sinon.restore();
+    });
+  
+    describe('Usando o método GET em /chocolates', function () {
+      it('Retorna a lista completa de chocolates!', async function () {
+        const output = [
+          { id: 1, name: 'Mint Intense', brandId: 1 },
+          { id: 2, name: 'White Coconut', brandId: 1 },
+          { id: 3, name: 'Mon Chéri', brandId: 2 },
+          { id: 4, name: 'Mounds', brandId: 3 },
+        ];
+  
+        const response = await chai
+          .request(app)
+          .get('/chocolates');
+        expect(response.status).to.be.equal(200);
+        expect(response.body.chocolates).to.deep.equal(output);
+      });
+    });
+  }); 

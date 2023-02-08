@@ -1,0 +1,142 @@
+
+
+ : Rotas podem ser chamadas de caminhos, paths e endpoints de uma API.
+
+  No contexto de Back-end, rotas representam as portas de entrada para a sua API.
+
+  ANATAOMIA DA URL:
+
+  https       ://    app.betrybe.com       /login
+  PROTOCOLO   WTF      DOMINIO                ROTA
+
+
+uma rota é a parte de uma URL que usamos para acessar uma API e fazer uma requisição a ela. Por meio
+da rota, na nossa aplicação, requisitaremos acesso, criação, leitura ou 
+remoção de informações da nossa API de gerenciamento de times.
+Em suma, quando você digita uma URL no navegador, por “trás dos panos” ele está fazendo 
+uma requisição àquela rota. Quando uma aplicação Front-end faz uma requisição para uma URL,
+ela quer algo de alguma rota da API. Precisamos saber como as requisições chegam para podermos 
+criar nossas próprias rotas e processá-las!
+
+
+
+// src/app.js
+
+// const express = require('express');
+
+// const app = express();
+
+app.get('/', (req, res) => res.status(200).json({ message: 'Olá Mundo!' }));
+
+// module.exports = app;
+
+
+
+Observe que a função get recebe dois parâmetros:
+
+1° parâmetro '/': Aqui é rota que tanto falamos. Podem ser /login, /produtos, /pessoas, ou 
+qualquer outra coisa! Neste caso, colocamos apenas /.
+Chamamos a rota / de rota raiz;
+
+2° parâmetro (req, res) => {}: Este espera uma função de callback. Esta função pode receber de 2 a 4 parâmetros, sendo eles:
+req: Essa é a Request (ou requisição), é por meio dela que recebemos os dados (envio por query, params e body);
+res: Essa é a Response (ou resposta), é por meio dela que respondemos o que nos é solicitado;
+next: Não vamos trabalhar com ele nesta aula;
+err: Não vamos trabalhar com ele nesta aula.
+Essa função é responsável por responder nossas requisições. Então, observe o trecho res.status(200).json({ message: 'Olá Mundo!' })
+ e reflita sobre o que cada coisa deve significar.
+
+res como comentado, responde as requisições. Estas requisições podem ser respondidas de vários jeitos, tais como:
+Formato text/JSON, como o caso do res.json({ message: 'Olá Mundo!' });
+Formato text/HTML, como o caso do res.send('<h1>Olá Mundo!</h1>');
+Redirecionamentos, como o caso do res.redirect('https://www.betrybe.com/');
+Páginas completas ou partes dela, como o caso do res.render('index.html');
+Finalizando, como o caso do res.end();
+
+
+Os status code mais conhecidos são:
+
+200: Que quer dizer ‘ok’;
+500: Que quer dizer erro no servidor;
+404: Este muitas pessoas já viram, ele quer dizer que a página não foi encontrada;
+De olho na dica 👀: associe os status a constantes nomeadas, desse modo você facilita a leitura! const OK = 200, 
+const INTERNAL_SERVER_ERROR = 500 e const NOT_FOUND = 404 são ótimos começos!
+
+=-=-=---==--==-=-=-=-==
+
+Anatomia de requisições: o protocolo HTTP
+
+GET / HTTP/1.1
+Host: developer.mozilla.org
+Accept: text/html
+
+Vejamos quais são as informações presentes nessa requisição:
+
+O método HTTP: definido por um verbo em inglês. Nesse caso, utilizamos o GET, 
+que normalmente é utilizado para “buscar” algo do servidor,
+ e é também o método padrão executado por navegadores quando acessamos uma URL.
+
+O caminho no servidor do recurso que estamos tentando acessar: Nesse caso, o caminho é /, 
+pois estamos acessando a página inicial da aplicação;
+
+A versão do protocolo (1.1 é a versão nesse exemplo);
+
+O local (host, ou “hospedeiro”) onde está o recurso que se está tentando acessar: Ou seja, a URL! 
+Ou, se for mais direto, o endereço IP servidor.
+
+Os headers, ou cabeçalhos: são informações adicionais a respeito de uma requisição ou de uma resposta. 
+Eles podem ser enviados do cliente para o servidor, ou vice-versa. Na requisição do exemplo acima, temos o
+ header Host, o qual informa o endereço do servidor e o header Accept, que informa o tipo de resposta a qual esperamos do servidor.
+
+
+ Esses são os dados transmitidos em uma request do tipo GET. No entanto, o GET não é o único método HTTP existente.
+  Na verdade, existem 39 métodos diferentes! Os mais comuns são: GET, PUT, POST, DELETE e PATCH, 
+ além do método OPTIONS, utilizado por clientes para entender como deve ser realizada a comunicação com o servidor
+
+ <<-Servidor recebe uma requisição ele envia resposta ->>
+
+ HTTP/1.1 200 OK
+Date: Sat, 09 Oct 2010 14:28:02 GMT
+Server: Apache
+Last-Modified: Tue, 01 Dec 2009 20:18:22 GMT
+ETag: "51142bc1-7449-479b075b2891b"
+Accept-Ranges: bytes
+Content-Length: 29769
+Content-Type: text/html
+
+<!DOCTYPE html... (aqui vêm os 29769 bytes da página solicitada)
+
+
+-----------------
+
+E como uma requisição envia dados para o servidor?
+Existem 3 formas de nós enviarmos dados para um servidor, duas pela própria URL e uma pelo corpo da requisição.
+
+->Envio por consulta, ou req.query
+
+Quando pesquisamos algo no Google, usamos esse método!
+
+Construção: /rota?variavel1=valor&variavel1=valor&variavelN=valor
+Explicação:
+/rota é o caminho, por exemplo, /produtos, /pessoas, /pesquisa, …;
+? é o indicador que vamos passar dados em para a rota;
+& é o separador que se usa quando queremos enviar muitos dados;
+variavelN é uma chave identificadora, por exemplo, nome, frequenciaMinima, q, …;
+valor é o valor da variável, por exemplo, nome=Tobias, frequenciaMinima=144, q=express, …;
+
+->Envio por parâmetro ou req.params
+
+Esse exemplo é mais visível em e-commerces ou sites que têm produtos cadastrados.
+
+Construção: /rota/:variavelN
+Explicação:
+/rota é o caminho, por exemplo, /produto, /pessoa,, …;
+/: é o indicador que vamos passar um dado para a rota;
+variavelN é uma chave identificadora, por exemplo, id, …; (aqui geralmente passamos ids mas não se restringe a isso)
+
+-> Envio por corpo ou req.body
+
+Sabe quando preenchemos um formulário de pagamento após uma compra online ou entramos no course 
+com nosso e-mail e senha? Aí está o envio de informações pelo corpo da requisição.
+
+Também chamamos esse envio de envio tipo POST os outros 2 sao GET

@@ -1,0 +1,36 @@
+CONSTRUINDO API
+criar um arquivo para a API chamado app.js dentro da pasta src.
+INSTALAR EXPRESS
+
+npm install express@4.17.1 --save-exact
+======================
+// src/app.js
+
+const express = require('express');
+
+const app = express();
+
+app.get('/chocolates', async (req, res) => {
+  const chocolates = await cacauTrybe.getAllChocolates();
+  res.status(200).json({ chocolates });
+});
+
+module.exports = app;
+
+
+⏰ Hora da reflexão: imagine que por algum motivo, externo a nossa aplicação, o arquivo CacauTrybeFile.json
+ seja corrompido ou deletado. Consequentemente, nossos testes, que antes executavam com sucesso,
+  começam a falhar. O que podemos fazer nesse caso? 🤔
+
+Resposta: O ideal é não permitir que nosso código realize operações de IO de fato, 
+mas apenas simular que elas estão sendo realizadas. Dessa forma, garantimos que um
+ banco de dados inconsistente ou um arquivo faltando na hora de executar os testes não 
+ faça com que tudo vá por água abaixo.
+Para isso existe o conceito de Test Doubles ou, numa tradução livre, Dublês
+de Testes (remetendo aos dublês de filmes).
+
+
+-->
+Com esses dublês, podemos simular, por exemplo, as funções do módulo fs. Nosso código vai pensar que está chamando 
+as funções do fs, porém estará chamando as nossas funções, que se comportarão da maneira que queremos, mas sem
+ a necessidade de escrever, ler ou ter dependência de arquivo reais.

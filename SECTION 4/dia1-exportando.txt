@@ -1,0 +1,58 @@
+
+EXPORTANDO MODULOS
+
+// brlValue.js
+const brl = 5.37;
+
+const usdToBrl = (valueInUsd) => valueInUsd * brl;
+
+module.exports = usdToBrl;
+
+========
+Imagine que estamos exportando uma função, de modo que podemos utilizá-la para
+ converter um valor em dólares para outro valor,neste caso em reais.
+
+
+// index.js
+const convert = require('./brlValue');
+
+const usd = 10;
+const brl = convert(usd);
+
+console.log(brl) // 53.7
+
+Perceba que podemos dar o nome que quisermos para a função depois que a importamos, independente de qual é o seu nome dentro do módulo.
+
+===============
+
+Suponha que agora desejamos exportar tanto a função de conversão quanto o valor do dólar (a variável brl). 
+Para isso, podemos exportar um objeto contendo as duas constantes da seguinte forma:
+
+// brlValue.js
+const brl = 5.37;
+
+const usdToBrl = (valueInUsd) => valueInUsd * brl;
+
+module.exports = {
+  brl,
+  usdToBrl,
+};
+
+Desse modo, ao importarmos o módulo receberemos o seguinte objeto como resposta:
+
+// index.js
+const brlValue = require('./brlValue');
+
+console.log(brlValue); // { brl: 5.37, usdToBrl: [Function: usdToBrl] }
+
+console.log(`Valor do dólar: ${brlValue.brl}`); // Valor do dólar: 5.37
+console.log(`10 dólares em reais: ${brlValue.usdToBrl(10)}`); // 10 dólares em reais: 53.7
+
+Como estamos lidando com um objeto, podemos utilizar object DESTRUCTURING para transformar
+ as propriedades do objeto importado em constantes no escopo global:
+
+
+const { brl, usdToBrl } = require('./brlValue');
+
+console.log(`Valor do dólar: ${brl}`); // Valor do dólar: 5.37
+console.log(`10 dólares em reais: ${usdToBrl(10)}`); // 10 dólares em reais: 53.7
