@@ -137,8 +137,7 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Ocorreu um erro ao cadastrar uma pessoa' });
   }
 });
-// module.exports = router;
-
+// module.exports = router; 
 No código acima, importamos o módulo de src/db/peopleDB.js. No endpoint POST /, criamos 
 a variável person para receber os dados da pessoa a ser cadastrada.
 
