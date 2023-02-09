@@ -24,3 +24,36 @@ da aplicação. Esses valores podem ser, por exemplo, um JSON dentro do corpo da
 git clone git@github.com:tryber/msc-architecture-trybecar.git
 cd msc-architecture-trybecar
 git checkout complex-application
+
+
+A camada Model tem como responsabilidade acomodar as entidades da nossa aplicação. Como assim? 🤔
+
+Quando os endpoints da API trybecar foram apresentados, três entidades foram mencionadas:
+ pessoa motorista
+ pessoa passageira
+ viagem
+As ações que a API fornece através dos endpoints se referem a essas entidades, ou seja,
+ toda vez que uma ação é disparada através da API, ela atuará sobre os dados armazenados 
+ de pelo menos uma das entidades relacionadas.
+
+Na API trybecar os dados das entidades estão sendo armazenados em um banco de
+ dados MySQL e a camada Model fornece uma maneira unificada de acessar esses dados.
+  Dessa forma, quando qualquer outra parte da aplicação necessitar dos dados de alguma entidade,
+  existirá um Model que irá fornecer esses dados de maneira padronizada.
+
+A principal vantagem de utilizarmos a camada Model é a de unificar o acesso aos dados, evitando a 
+duplicação de código relacionado ao acesso a dados.
+
+======================
+Implementando um CRUD do zero - Parte 1 - Camada Model
+
+git clone git@github.com:tryber/msc-architecture-trybecar.git
+cd msc-architecture-trybecar
+git checkout complex-application
+
+
+docker-compose up -d
+
+docker exec -it trybecar bash
+npm install
+npm run debug
